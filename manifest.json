@@ -1,0 +1,12 @@
+{
+  "name": "test-chrome-extension-incognito-tab",
+  "version": "0.1",
+  "manifest_version": 2,
+  "description":
+    "opening a new window from incognito previously opened non-incognito, now it opens incognito",
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "minimum_chrome_version": "49",
+  "optional_permissions": ["activeTab"]
+}
