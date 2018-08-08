@@ -1,39 +1,25 @@
-const IMG_NAME = "test.jpg";
-const IMG_PATH = `./${IMG_NAME}`;
+const IMG_PATH = `./test.txt`;
 const FILESYSTEM_PATH = `filesystem:chrome-extension://${
   chrome.runtime.id
-}/persistent/${IMG_NAME}`;
+}/persistent/${IMG_PATH}`;
 
-document.getElementById("download").addEventListener(
-  "click",
-  e => {
-    // make file
-    fetch(IMG_PATH)
-      .then(resp => resp.blob())
-      .then(blob => {
-        console.log("GOT BLOB!", blob); //REM
-        return FS.requestFs()
-          .then(fs => FS.createFile(fs, IMG_PATH))
-          .then(fileEntry => FS.writeFile(fileEntry, blob));
-      })
-      .then(fileEntry => {
-        window._fileEntry = fileEntry; //REM
-        console.log("Created!", FILESYSTEM_PATH, fileEntry);
-        let url = FILESYSTEM_PATH;
-        chrome.downloads.download({ url }, downloadId => {
-          console.log("DOWNLOAD?", chrome.runtime.lastError, downloadId); //REM
-        });
-        chrome.tabs.create({ url });
-      })
-      .catch(e => {
-        console.log("ERROR", e);
+document.getElementById("settings-url").innerText = `chrome://extensions/?id=${
+  chrome.runtime.id
+}`;
+
+document.getElementById("download").addEventListener("click", e => {
+  let blob = new Blob(["Lorem Ipsum"], { type: "text/plain" });
+
+  FSAPI.requestFs()
+    .then(fs => FSAPI.createFile(fs, IMG_PATH))
+    .then(fileEntry => FSAPI.writeFile(fileEntry, blob))
+    .then(fileEntry => {
+      let url = FILESYSTEM_PATH;
+      chrome.downloads.download({ url }, downloadId => {
+        console.log("DOWNLOAD", chrome.runtime.lastError, downloadId);
       });
-
-    // download
-    // let fullPath = Util.absPath(Util.FILENAME);
-    // Util.downloadURL(fullPath, (err, downloadId) => {
-    //   console.log("DOWNLOAD", err, downloadId); //REM
-    // });
-  },
-  false
-);
+    })
+    .catch(e => {
+      console.log("ERROR", e);
+    });
+});

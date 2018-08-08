@@ -1,5 +1,5 @@
 {
-  "name": "test-chrome-extension-incognito-tab",
+  "name": "test-chrome-extension-allow-incognito-downloads",
   "version": "0.1",
   "manifest_version": 2,
   "description":

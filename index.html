@@ -3,10 +3,37 @@
   <head>
     <meta charset="utf-8">
     <title>Test</title>
+    <style>body { max-width: 630px; margin: 3em auto 1em; }</style>
   </head>
   <body>
-    <a id="download" href="#">Download file</a>
-    <script src="util.js"></script>
+    <h1>Chrome 68 - allow incognito download bug</h1>
+    <br />
+    <p><strong>Steps to reproduce:</strong></p>
+    <ol>
+      <li>
+        go to the Chrome settings for this extension: <strong id="settings-url"></strong>
+      </li>
+      <li>
+        enable <strong>“Allow in incognito”</strong>
+      </li>
+      <li>
+        click the <strong>Download file</strong> link below.
+      </li>
+      <li>
+        This triggers a <strong>chrome.downloads.download(...)</strong> call of an <strong>HTML5 filesystem file</strong>
+      </li>
+    </ol>
+    <p><strong>Expected result:</strong><br /><br />The file downloads OK!</p>
+    <p><strong>Experienced result:</strong><br /><br />The download fails with the error <strong>“Failed - Network error”</strong>.
+    </p>
+    <p>
+      <br /><br />
+      <strong><a id="download" href="#">Download file</a></strong> &lt;- click to trigger download
+    </p>
+    <br /><br />
+    <p style="color: #999">
+      (Tested in Chrome 68.0.3440.84 on Mac OSX 10.13.5. Seen on Windows too.)
+    </p>
     <script src="filesystem.js"></script>
     <script src="index.js"></script>
   </body>

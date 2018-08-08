@@ -1,3 +1,7 @@
-# Regression: windows.create incognito: false ignored
+# Regression: chrome.downloads.download when allow incognito
 
-In Chrome v68 I have received reports that creating a new window with `incognito: false` while viewing an incognito tab fails to open a new window in non-incognito.
+In Chrome v68 calling `chrome.downloads.download` on an HTML5 filesytem file is failing with "Failed - Network error" when the extension has "Allow in incognito" enabled in the Chrome settings.
+
+This is a regression from v67.
+
+Triggered in Mac OS X and Windows.

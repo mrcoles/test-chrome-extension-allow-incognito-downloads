@@ -1,12 +1,4 @@
-const FS = (window.FS = {});
-
-// ## Convert filename (e.g., foo.txt) to absolute filesystem path
-
-FS.absPath = function absPath(filename) {
-  return `filesystem:chrome-extension://${
-    chrome.runtime.id
-  }/persistent/${filename}`;
-};
+const FSAPI = (window.FSAPI = {});
 
 // ## Request filesystem (promise)
 //
@@ -15,8 +7,7 @@ FS.absPath = function absPath(filename) {
 window.requestFileSystem =
   window.requestFileSystem || window.webkitRequestFileSystem;
 
-FS.requestFs = function requestFs() {
-  console.log("REQUEST FS!"); //REM
+FSAPI.requestFs = function requestFs() {
   return new Promise((resolve, reject) => {
     window.requestFileSystem(window.PERSISTENT, 1024 * 1024, resolve, reject);
   });
@@ -26,16 +17,12 @@ FS.requestFs = function requestFs() {
 //
 // (fs, filename) -> fileEntry
 //
-FS.createFile = function createFile(fs, filename) {
-  console.log("createFile!", fs, filename); //REM
+FSAPI.createFile = function createFile(fs, filename) {
   return new Promise((resolve, reject) => {
     fs.root.getFile(
       filename,
       { create: true, exclusive: false },
-      (fileEntry, b, c) => {
-        console.log("RESOLVED createFile", fileEntry, b, c); //REM
-        resolve(fileEntry);
-      },
+      fileEntry => resolve(fileEntry),
       err => reject(err)
     );
   });
@@ -45,8 +32,7 @@ FS.createFile = function createFile(fs, filename) {
 //
 // (fileEntry, blob) -> fileEntry
 //
-FS.writeFile = function writeFile(fileEntry, blob) {
-  console.log("writeFile", fileEntry); //REM
+FSAPI.writeFile = function writeFile(fileEntry, blob) {
   return new Promise((resolve, reject) => {
     fileEntry.createWriter(
       fileWriter => {
